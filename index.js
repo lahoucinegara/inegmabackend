@@ -12,7 +12,8 @@ app.get('/', (req, res)=>{
     res.send('Hello')
 })
 
-app.get('/userlist', async (req, res) => {
+// -------------get All users --------------
+app.get('/users', async (req, res) => {
     let users = await Users.find();
     if(users.length>0) {
         res.send(users)
@@ -22,6 +23,8 @@ app.get('/userlist', async (req, res) => {
     }
 })
 
+// -----------add new user-----------------
+
 app.post('/newuser', async (req, res)=>{
     let newUser = new Users(req.body)
     //save
@@ -29,12 +32,17 @@ app.post('/newuser', async (req, res)=>{
     res.send(result)
 })
 
-app.post('/authentication/register', async (req, res)=>{
-    let newUser = new Users(req.body)
-    //save
-    let result = await newUser.save()
-    res.send(result)
-})
+// ----------- get one user ---------------
+
+app.get('/user/:id', async (req, res) => {
+    let result = await Users.findOne({_id: req.params.id})
+    if(result){
+         res.send(result)
+    }
+    else {
+         res.send({result: 'this product not existe'})
+    }
+ })
 
 
 
